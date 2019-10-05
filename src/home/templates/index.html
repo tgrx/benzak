@@ -5,8 +5,8 @@
 {%block body %}
 
 <ul>
-    {% for item in alco %}
-    <li>{{item}}</li>
+    {% for value, sign in alco %}
+    <li>{{value}} <pre>{{sign}}</pre></li>
     {% endfor %}
 </ul>
 

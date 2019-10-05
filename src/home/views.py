@@ -1,10 +1,10 @@
-from platform import system
-
+from django.core.signing import Signer
 from django.shortcuts import render
 
 
 def get_alco():
-    return ["Jim Beam", "Vodka", "Pivo"]
+    signer = Signer()
+    return tuple((v, signer.sign(v)) for v in ["Jim Beam", "Vodka", "Pivo"])
 
 
 def index(request):
