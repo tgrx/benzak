@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Main{% endblock %}
+{% block title %}{{title}}{% endblock %}
 
 {%block body %}
 
 <ul>
-    {% for item in data %}
+    {% for item in alco %}
     <li>{{item}}</li>
     {% endfor %}
 </ul>

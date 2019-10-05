@@ -1,0 +1,11 @@
+default:
+  SECRET_KEY: ""
+  DEBUG: true
+  ALLOWED_HOSTS: []
+
+heroku:
+  DEBUG: false
+  ALLOWED_HOSTS:
+    - 127.0.0.1
+    - localhost
+    - benzak.herokuapp.com
