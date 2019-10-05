@@ -9,3 +9,9 @@ heroku:
     - 127.0.0.1
     - localhost
     - benzak.herokuapp.com
+
+development:
+  DEBUG: true
+  ALLOWED_HOSTS:
+    - 127.0.0.1
+    - localhost
