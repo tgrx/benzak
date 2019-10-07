@@ -9,8 +9,14 @@
 {% for fuel, data in prices %}
 
 <div class="pricebox" style="background-color: {{data.color}}">
-    <span class="pblogo">{{fuel}}</span>
-    <span class="prices">{{data.price}} Р</span>
+    <div class="pricebox-logo"><span>{{fuel}}</span></div>
+    <div class="pricebox-prices">
+        <ul>
+        {% for price in data.prices %}
+        <li class="li-{{price.sign}}">{{price.value | floatformat:-2 }}</li>
+        {% endfor %}
+        </ul>
+    </div>
 </div>
 
 {% endfor %}

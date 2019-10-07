@@ -4,76 +4,144 @@
     <meta charset="UTF-8">
     <title>Benzak :: {% block title %}XXX{% endblock %}</title>
     <style>
+        @import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);
+
         body {
             background-color: #002207;
-            font-family: Arial, Helvetica, sans-serif;
             color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            padding-left: 30px;
             padding-top: 48px;
         }
-        a {
+
+        div {
+            padding: 0;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        a:link {
             color: lime;
         }
+
         a:visited {
             color: silver;
         }
+
         a:hover {
-            color: red;
+            color: white;
         }
+
+        a:active {
+            color: #01efad;
+        }
+
         header {
+            background-color: #015200;
+            height: 48px;
+            left: 0;
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            height: 48px;
-            background-color: #015200;
+            z-index: 1;
+            border-bottom: #01efad 1px solid;
         }
+
+        .menu-item {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
         .logo {
+            color: #01efad;
             font-size: 36px;
-            text-decoration: none;
             margin-left: 10px;
             margin-right: 10px;
-            color: lime;
+            text-decoration: none;
         }
+
         .pricebox {
+            background-color: #9500D0;
+            border: black;
+            display: inline-block;
+            height: 200px;
+            margin-right: 30px;
+            margin-top: 30px;
             position: relative;
             width: 350px;
-            height: 200px;
-            background-color: #9500D0;
-            margin: 30px;
+        }
+
+        .pricebox-logo {
+            color: white;
             display: inline-block;
-        }
-        span.pblogo {
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
             font-size: 150px;
-            color: white;
-            opacity: 0.3;
-            text-align: center;
-            width: 200px;
             height: 200px;
-        }
-        span.prices {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 30px;
-            color: white;
+            left: 0;
+            opacity: 0.3;
+            position: relative;
             text-align: center;
-            width: 100px;
-            height: 100px;
+            top: 0;
+            width: 200px;
+            vertical-align: middle;
+        }
+
+        .pricebox-prices {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: white;
+            display: inline-block;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 25px;
+            height: 200px;
+            position: relative;
+            right: 0;
+            text-align: right;
+            top: 0;
+            vertical-align: middle;
+            width: 145px;
+        }
+
+        .pricebox-prices > ul {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 20px;
+        }
+
+        .li-byn:after {
+            content: " \20BF";
+        }
+
+        .li-eur:after {
+            content: " \20ac";
+        }
+
+        .li-usd:after {
+            content: " $";
+        }
+
+        .li-rub:after {
+            content: " \20BD";
         }
     </style>
 </head>
 
 <body>
-    <header>
-            <a class="logo" href="/" aria-label="Bootstrap"><span class="logo">B</span></a>
-            <span class="menu-item"><a href="/">ЦЕНЫ</a></span>
-            <span class="menu-item"><a href="/">ГРАФИКИ</a></span>
-    </header>
+<header>
+    <a class="logo" href="/"><span class="logo">B</span></a>
+    <span class="menu-item"><a href="/">ЦЕНЫ</a></span>
+    <span class="menu-item"><a href="/graphic/">ГРАФИКИ</a></span>
+    <span class="menu-item"><a href="/about/">О ПРОЕКТЕ</a></span>
+</header>
 
-    <h1>{% block page_name%}{% endblock %}</h1>
+<h1>{% block page_name%}{% endblock %}</h1>
 
-    <div>
+<div>
     {% block content %}{% endblock %}
-    </div>
+</div>
 </body>
 
 </html>
