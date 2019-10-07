@@ -3,8 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Benzak :: {% block title %}XXX{% endblock %}</title>
+    <style>
+        body {
+            background-color: #002207;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            padding-top: 48px;
+        }
+        a {
+            color: lime;
+        }
+        a:visited {
+            color: silver;
+        }
+        a:hover {
+            color: red;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 48px;
+            background-color: #015200;
+        }
+        .logo {
+            font-size: 36px;
+            text-decoration: none;
+            margin-left: 10px;
+            margin-right: 10px;
+            color: lime;
+        }
+        .pricebox {
+            position: relative;
+            width: 350px;
+            height: 200px;
+            background-color: #9500D0;
+            margin: 30px;
+            display: inline-block;
+        }
+        span.pblogo {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 150px;
+            color: white;
+            opacity: 0.3;
+            text-align: center;
+            width: 200px;
+            height: 200px;
+        }
+        span.prices {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 30px;
+            color: white;
+            text-align: center;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
 </head>
+
 <body>
-{%block body %}{% endblock %}
+    <header>
+            <a class="logo" href="/" aria-label="Bootstrap"><span class="logo">B</span></a>
+            <span class="menu-item"><a href="/">ЦЕНЫ</a></span>
+            <span class="menu-item"><a href="/">ГРАФИКИ</a></span>
+    </header>
+
+    <h1>{% block page_name%}{% endblock %}</h1>
+
+    <div>
+    {% block content %}{% endblock %}
+    </div>
 </body>
+
 </html>
