@@ -63,5 +63,5 @@ def get_prices():
     }
 
 
-def index(request):
+def about(request):
     return render(request, "index.html", {"prices": get_prices().items()})
