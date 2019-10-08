@@ -13,11 +13,17 @@
 <p>Используемые технологии:</p>
 
 <ul style="list-style: initial; padding-left: 40px">
-    <li>Python 3.7</li>
-    <li>Heroku</li>
-    <li>Django</li>
-    <li>Pipenv</li>
-    <li>Dynaconf</li>
+    {% for tech in technologies %}
+    <li>
+        {% if tech.url %}
+            <a href="{{tech.url}}">
+        {%endif %}
+            {{tech.name}}
+        {% if tech.url %}
+            </a>
+        {%endif %}
+    </li>
+    {% endfor %}
 </ul>
 
 {% endblock %}
