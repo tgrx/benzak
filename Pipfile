@@ -9,6 +9,8 @@ black = "==19.3b0"
 [packages]
 django = "*"
 dynaconf = {extras = ["yaml"],version = "*"}
+gunicorn = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.7"
