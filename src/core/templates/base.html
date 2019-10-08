@@ -24,12 +24,8 @@
             list-style: none;
         }
 
-        a:link {
+        a, a:link {
             color: lime;
-        }
-
-        a:visited {
-            color: silver;
         }
 
         a:hover {
@@ -37,7 +33,12 @@
         }
 
         a:active {
-            color: #01efad;
+            color: orangered;
+        }
+
+        .here {
+            color: orangered;
+            text-decoration: none;
         }
 
         header {
@@ -57,7 +58,8 @@
         }
 
         .logo {
-            color: #01efad;
+            background-color: rgba(255, 255, 255, 0.4);
+            border: black 2px solid;
             font-size: 36px;
             margin-left: 10px;
             margin-right: 10px;
@@ -126,15 +128,25 @@
         .li-rub:after {
             content: " \20BD";
         }
+
+        form > div {
+            display: inline-block;
+            width: 400px;
+            height: 50px;
+        }
     </style>
 </head>
 
 <body>
 <header>
-    <a class="logo" href="/"><span class="logo">⛽️</span></a>
-    <span class="menu-item"><a href="/dynamics/">ДИНАМИКА</a></span>
-    <span class="menu-item"><a href="/graphics/">ГРАФИКА</a></span>
-    <span class="menu-item"><a href="/about/">О ПРОЕКТЕ</a></span>
+    {% url 'about' as u_about %}
+    {% url 'actual' as u_actual %}
+    {% url 'dynamics' as u_dynamics %}
+    {% url 'graphics' as u_graphics %}
+    <a class="logo" href="{{u_actual}}"><span>⛽️</span></a>
+    <a href="{{u_dynamics}}" class="menu-item{% ifequal request.path u_dynamics %} here{% endifequal %}"><span>ДИНАМИКА</span></a>
+    <a href="{{u_graphics}}" class="menu-item{% ifequal request.path u_graphics %} here{% endifequal %}"><span>ГРАФИКА</span></a>
+    <a href="{{u_about}}" class="menu-item{% ifequal request.path u_about %} here{% endifequal %}"><span>О ПРОЕКТЕ</span></a>
 </header>
 
 <h1>{% block page_name%}{% endblock %}</h1>
