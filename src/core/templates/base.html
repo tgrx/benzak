@@ -138,15 +138,25 @@
 </head>
 
 <body>
+
+<div align="right">
+    <a href="https://github.com/tgrx/benzak">
+        <img alt="Fork me on GitHub!" src="https://img.shields.io/github/forks/tgrx/benzak?style=social">
+    </a>
+</div>
+
 <header>
     {% url 'about' as u_about %}
     {% url 'actual' as u_actual %}
     {% url 'dynamics' as u_dynamics %}
     {% url 'graphics' as u_graphics %}
     <a class="logo" href="{{u_actual}}"><span>⛽️</span></a>
-    <a href="{{u_dynamics}}" class="menu-item{% ifequal request.path u_dynamics %} here{% endifequal %}"><span>ДИНАМИКА</span></a>
-    <a href="{{u_graphics}}" class="menu-item{% ifequal request.path u_graphics %} here{% endifequal %}"><span>ГРАФИКА</span></a>
-    <a href="{{u_about}}" class="menu-item{% ifequal request.path u_about %} here{% endifequal %}"><span>О ПРОЕКТЕ</span></a>
+    <a href="{{u_dynamics}}"
+       class="menu-item{% ifequal request.path u_dynamics %} here{% endifequal %}"><span>ДИНАМИКА</span></a>
+    <a href="{{u_graphics}}"
+       class="menu-item{% ifequal request.path u_graphics %} here{% endifequal %}"><span>ГРАФИКА</span></a>
+    <a href="{{u_about}}"
+       class="menu-item{% ifequal request.path u_about %} here{% endifequal %}"><span>О ПРОЕКТЕ</span></a>
 </header>
 
 <h1>{% block page_name%}{% endblock %}</h1>
