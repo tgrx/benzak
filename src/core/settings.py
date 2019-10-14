@@ -1,5 +1,7 @@
+import os
 from pathlib import Path
 
+import dj_database_url
 from dynaconf import settings as _settings
 
 BASE_DIR = Path(__file__).parent.parent.resolve()
@@ -55,11 +57,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.app"
 
+db_url = _settings.DATABASE_URL
+if _settings.ENV_FOR_DYNACONF == "heroku":
+    db_url = os.getenv("DATABASE_URL")
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": (BASE_DIR / "db.sqlite3").as_posix(),
-    }
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": (BASE_DIR / "db.sqlite3").as_posix(),
+    # }
+    "default": dj_database_url.parse(db_url, conn_max_age=600),
 }
 
 AUTH_PASSWORD_VALIDATORS = [
