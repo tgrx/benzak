@@ -1,6 +1,5 @@
 from django.urls import path
-from django.views.generic import TemplateView
 
-urlpatterns = [
-    path("", TemplateView.as_view(template_name="dynamics/index.html"), name="dynamics")
-]
+from dynamics.views import DynamicsView
+
+urlpatterns = [path("", DynamicsView.as_view(), name="dynamics")]

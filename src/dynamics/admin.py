@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from . import models
+
+admin.site.register(models.Currency)
+admin.site.register(models.Fuel)
