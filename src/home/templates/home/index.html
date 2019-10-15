@@ -6,14 +6,14 @@
 
 {% block content %}
 
-{% for fuel, data in prices %}
+{% for fuel, prices in actual %}
 
-<div class="pricebox" style="background-color: {{data.color}}">
-    <div class="pricebox-logo"><span>{{fuel}}</span></div>
+<div class="pricebox" style="background-color: {{fuel.color}}">
+    <div class="pricebox-logo"><span>{{fuel.short_name}}</span></div>
     <div class="pricebox-prices">
         <ul>
-        {% for price in data.prices %}
-        <li class="li-{{price.sign}}">{{price.value | floatformat:-2 }}</li>
+        {% for price in prices %}
+        <li class="li-{{price.currency.name | lower}}">{{price.price | floatformat:-2 }}</li>
         {% endfor %}
         </ul>
     </div>

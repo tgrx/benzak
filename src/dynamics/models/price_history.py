@@ -12,7 +12,7 @@ class PriceHistory(m.Model):
 
     class Meta:
         verbose_name_plural = "Price History"
-        ordering = ["at", "fuel", "currency"]
+        ordering = ["-at", "fuel", "currency"]
 
     def __repr__(self):
         return f"{self.__class__.__name__} #{self.pk}: {self.currency} / {self.fuel}"

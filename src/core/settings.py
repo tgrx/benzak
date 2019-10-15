@@ -61,9 +61,7 @@ db_url = _settings.DATABASE_URL
 if _settings.ENV_FOR_DYNACONF == "heroku":
     db_url = os.getenv("DATABASE_URL")
 
-DATABASES = {
-    "default": dj_database_url.parse(db_url, conn_max_age=600)
-}
+DATABASES = {"default": dj_database_url.parse(db_url, conn_max_age=600)}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
