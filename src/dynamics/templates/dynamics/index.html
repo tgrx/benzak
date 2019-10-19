@@ -6,29 +6,28 @@
 
 {% block content %}
 
-<form id="dynamics">
-    <div>
-        <label for="at">День:</label>
-        <input type="date" id="at" name="at" value="2019-01-13">
-    </div>
-
-    <div>
-        <label for="currency">Валюта:</label>
-        <select id="currency" name="currency">
-            {% for c in currency %}
-            <option value="{{c.name}}">{{c.name}}{% if c.symbol %} - {{c.symbol}}{% endif %}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div>
-        <label for="fuel">Топливо:</label>
-        <select id="fuel" name="fuel">
-            {% for f in fuels %}
-            <option value="{{f.short_name}}">{{f.name}}</option>
-            {% endfor %}
-        </select>
-    </div>
+<form id="dynamics" method="GET" action="{% url 'dynamics' %}">
+    {{form.as_p}}
+    <button type="submit" >Узнать</button>
 </form>
+
+<div>
+
+    {% for fuel, prices in object_list %}
+
+    <div class="pricebox" style="background-color: {{fuel.color}}">
+        <div class="pricebox-logo"><span>{{fuel.short_name}}</span></div>
+        <div class="pricebox-prices">
+            <ul>
+                {% for price in prices %}
+                <li class="li-{{price.currency.name | lower}}">{{price.price | floatformat:-2 }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    {% endfor %}
+
+</div>
 
 {% endblock %}

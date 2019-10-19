@@ -6,6 +6,7 @@ verify_ssl = true
 [dev-packages]
 black = "==19.3b0"
 ipython = "*"
+pudb = "*"
 
 [packages]
 dj-database-url = "*"
