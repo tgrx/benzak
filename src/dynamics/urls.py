@@ -1,5 +1,11 @@
-from django.urls import path
+from django.urls import re_path
 
 from dynamics.views import DynamicsView
 
-urlpatterns = [path("", DynamicsView.as_view(), name="dynamics")]
+urlpatterns = [
+    re_path(
+        r"((?P<at>\d{4}-\d{2}-\d{2})/)?((?P<fuel>\d*)/)?((?P<currency>\d*)/)?",
+        DynamicsView.as_view(),
+        name="dynamics",
+    )
+]

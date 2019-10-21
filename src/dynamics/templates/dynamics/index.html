@@ -6,9 +6,10 @@
 
 {% block content %}
 
-<form id="dynamics" method="GET" action="{% url 'dynamics' %}">
+<form id="dynamics" method="POST" action="{% url 'dynamics' %}">
+    {% csrf_token %}
     {{form.as_p}}
-    <button type="submit" >Узнать</button>
+    <button type="submit">Узнать</button>
 </form>
 
 <div>
