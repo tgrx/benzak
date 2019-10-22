@@ -1,13 +1,9 @@
 from django import forms as f
 
-from dynamics.models import Currency, Fuel, PriceHistory
+from dynamics.models import Currency, Fuel
 
 
-class SearchForm(f.ModelForm):
+class SearchForm(f.Form):
+    at = f.DateField(widget=f.DateInput(attrs={"type": "date"}))
     currency = f.ModelChoiceField(queryset=Currency.objects.all(), required=False)
     fuel = f.ModelChoiceField(queryset=Fuel.objects.all(), required=False)
-
-    class Meta:
-        model = PriceHistory
-        fields = ("at", "currency", "fuel")
-        widgets = {"at": f.DateInput(attrs={"type": "date"})}

@@ -2,80 +2,94 @@ from collections import defaultdict
 from datetime import date
 
 from django.db.models import Model
-from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import FormView, ListView
+from django.views.generic import ListView
+from django.views.generic.edit import FormView
 
+from core.utils import aname
 from dynamics.forms import SearchForm
 from dynamics.models import PriceHistory
 
 
-class DynamicsView(ListView, FormView):
-    form_class = SearchForm
-    model = PriceHistory
+class DynamicsView(FormView, ListView):
+    http_method_names = {"get", "post"}
     template_name = "dynamics/index.html"
+    model = PriceHistory
 
-    def get(self, request, *args, **kwargs):
-        form_attrs = {_k: _v for _k, _v in kwargs.items() if _v}
-        if form_attrs:
-            request.GET = form_attrs
-
-        r = super().get(request, *args, **kwargs)
-        return r
+    def get_form_class(self):
+        return SearchForm
 
     def get_initial(self):
-        return {"at": date.today()}
+        return {aname(PriceHistory.at): date.today()}
 
-    def form_valid(self, form):
-        url = reverse("dynamics")
+    def get_form_kwargs(self):
+        data = self.get_initial()
 
-        for field in ("at", "fuel", "currency"):
-            value = form.cleaned_data.get(field) or ""
-            if isinstance(value, Model):
-                value = value.pk
-            url += f"{value}/"
+        for field in self.get_form_class().declared_fields:
+            value = self.kwargs.get(field)
+            if value:
+                data[field] = value
 
-        return redirect(url)
+        if self.request.POST:
+            data.update(
+                {
+                    k: (v[0] if isinstance(v, list) else v)
+                    for k, v in self.request.POST.items()
+                }
+            )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["form"] = self.build_form()
+        return {"data": data}
 
-        return context
+    def get_success_url(self):
+        def _l(_field):
+            _form = self.get_form()
+            _form.full_clean()
+            _value = _form.cleaned_data.get(_field)
+            _retvalue = None
 
-    def build_form(self):
-        if self.request.GET:
-            form = SearchForm(self.request.GET)
-        else:
-            form = SearchForm(initial={"at": date.today()})
+            if isinstance(_value, Model):
+                _retvalue = _value.pk
+            else:
+                _retvalue = _value
 
-        return form
+            return str(_retvalue or "")
+
+        parts_fields = ("at", "fuel", "currency")
+
+        parts = [_l(_f) for _f in parts_fields]
+        parts = "/".join(parts)
+        if parts:
+            parts += "/"
+
+        url = f"{reverse('dynamics')}{parts}"
+
+        return url
 
     def get_queryset(self):
-        if not self.request.GET:
-            return []
+        form = self.get_form()
 
-        form = SearchForm(self.request.GET)
         if not form.is_valid():
             # TODO: implement error handling
             return []
 
-        history = super().get_queryset()
+        history = PriceHistory.objects.all()
 
         # TODO: walrus op
-        if form.cleaned_data["at"]:
-            history = history.filter(at=form.cleaned_data["at"])
-
-        # TODO: walrus op
-        if form.cleaned_data["currency"]:
-            history = history.filter(currency=form.cleaned_data["currency"])
-
-        # TODO: walrus op
-        if form.cleaned_data["fuel"]:
-            history = history.filter(fuel=form.cleaned_data["fuel"])
+        for field in form.fields:
+            value = form.cleaned_data[field]
+            if value:
+                history = history.filter(**{field: value})
 
         grouped = defaultdict(list)
         for h in history:
             grouped[h.fuel].append(h)
 
         return grouped.items()
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        context.update(FormView.get_context_data(self, **kwargs))
+        context.update(ListView.get_context_data(self, **kwargs))
+
+        return context
