@@ -147,16 +147,36 @@
 
 <header>
     {% url 'about' as u_about %}
-    {% url 'actual' as u_actual %}
+    {% url 'api_settings' as u_api %}
     {% url 'dynamics' as u_dynamics %}
     {% url 'graphics' as u_graphics %}
-    <a class="logo" href="{{u_actual}}"><span>⛽️</span></a>
+    {% url 'login' as u_login %}
+    {% url 'logout' as u_logout %}
+    {% url 'password_change' as u_password_change %}
+    {% url 'signup' as u_signup %}
+
+    <a class="logo" href="{% url 'actual' %}"><span>⛽️</span></a>
     <a href="{{u_dynamics}}"
        class="menu-item{% ifequal request.path u_dynamics %} here{% endifequal %}"><span>ДИНАМИКА</span></a>
     <a href="{{u_graphics}}"
        class="menu-item{% ifequal request.path u_graphics %} here{% endifequal %}"><span>ГРАФИКА</span></a>
+
+    {% if request.user.is_authenticated %}
+    <a href="{{u_api}}"
+       class="menu-item{% ifequal request.path u_api %} here{% endifequal %}"><span>АПИ</span></a>
+    {% endif %}
+
     <a href="{{u_about}}"
        class="menu-item{% ifequal request.path u_about %} here{% endifequal %}"><span>О ПРОЕКТЕ</span></a>
+
+    {% if request.user.is_authenticated %}
+    <a class="menu-item{% ifequal request.path u_password_change %} here{% endifequal %}" href="{{u_password_change}}"><span>Сменить пароль️</span></a>
+    <a class="menu-item{% ifequal request.path u_logout %} here{% endifequal %}" href="{{u_logout}}"><span>Выйти ({{request.user.email}})️</span></a>
+    {% else %}
+    <a class="menu-item{% ifequal request.path u_login %} here{% endifequal %}" href="{{u_login}}"><span>Войти️</span></a>
+    <a class="menu-item{% ifequal request.path u_signup %} here{% endifequal %}" href="{{u_signup}}"><span>Вписаться️</span></a>
+    {% endif %}
+
 </header>
 
 <h1>{% block page_name%}{% endblock %}</h1>

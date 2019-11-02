@@ -6,7 +6,9 @@
 
 {% block content %}
 
+{% if request.user.is_staff %}
 <p><a href="{% url 'admin:index' %}">Управление сайтом</a></p>
+{% endif %}
 
 <h2>Серьёзная аналитика цен на бензин</h2>
 
