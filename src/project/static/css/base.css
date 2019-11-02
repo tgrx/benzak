@@ -1,0 +1,67 @@
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);
+
+body {
+    background-color: #002010;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 30px;
+    padding-top: 48px;
+}
+
+div {
+    padding: 0;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+a, a:link {
+    color: lime;
+}
+
+a:hover {
+    color: white;
+}
+
+a:active {
+    color: orangered;
+}
+
+.here {
+    color: orangered;
+    text-decoration: none;
+}
+
+header {
+    background-color: #00490f;
+    height: 48px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    border-bottom: rgba(0, 94, 54, 0.76) 2px solid;
+}
+
+.menu-item {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.logo {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: rgba(0, 94, 54, 0.76) 2px solid;
+    font-size: 36px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+form > div {
+    display: inline-block;
+    width: 400px;
+    height: 50px;
+}

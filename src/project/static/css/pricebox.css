@@ -1,0 +1,62 @@
+.pricebox {
+    background-color: #9500D0;
+    border: black;
+    display: inline-block;
+    height: 200px;
+    margin-right: 30px;
+    margin-top: 30px;
+    position: relative;
+    width: 350px;
+}
+
+.pricebox-logo {
+    color: white;
+    display: inline-block;
+    font-family: 'Fira Code', 'Courier New', Courier, monospace;
+    font-size: 150px;
+    height: 200px;
+    left: 0;
+    opacity: 0.3;
+    position: relative;
+    text-align: center;
+    top: 0;
+    width: 200px;
+    vertical-align: middle;
+}
+
+.pricebox-prices {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    display: inline-block;
+    font-family: 'Fira Code', 'Courier New', Courier, monospace;
+    font-size: 25px;
+    height: 200px;
+    position: relative;
+    right: 0;
+    text-align: right;
+    top: 0;
+    vertical-align: middle;
+    width: 145px;
+}
+
+.pricebox-prices > ul {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+}
+
+.li-byn:after {
+    content: " \20BF";
+}
+
+.li-eur:after {
+    content: " \20ac";
+}
+
+.li-usd:after {
+    content: " $";
+}
+
+.li-rub:after {
+    content: " \20BD";
+}

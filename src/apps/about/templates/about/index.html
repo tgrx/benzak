@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block page_name %}О ПРОЕКТЕ{% endblock %}
+
+{% block content %}
+
+{% if request.user.is_staff %}
+<p><a href="{% url 'admin:index' %}">Управление сайтом</a></p>
+{% endif %}
+
+<h2>Серьёзная аналитика цен на бензин</h2>
+
+{% if object_list %}
+
+<p>Используемые технологии:</p>
+
+<ul style="list-style: initial; padding-left: 40px">
+    {% for tech in object_list %}
+    <li>
+        {% if tech.url %}<a href="{{ tech.url }}">{% endif %}
+        {{ tech.name }}
+        {% if tech.url %}</a>{% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+{% endif %}
+
+{% endblock %}

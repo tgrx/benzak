@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}API{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'api/css/textarea-api-token.css' %}"/>
+{% endblock %}
+
+{% block page_name %}АПИ{% endblock %}
+
+{% block content %}
+
+<div>
+    <label for="textarea-api-token">Токен</label>
+</div>
+<div>
+    <textarea id="textarea-api-token" readonly rows="8" cols="56">{{object.token}}</textarea>
+</div>
+
+<div>
+    <form action="{% url 'api_reset_token' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Регенерировать</button>
+    </form>
+</div>
+
+{% endblock %}
