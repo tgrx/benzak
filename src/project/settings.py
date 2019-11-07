@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # DRF
+    "rest_framework",
     # our apps
     "apps.about",
     "apps.actual",
@@ -96,6 +98,7 @@ STATICFILES_DIRS = [PROJECT_DIR / "static"]
 
 # AUTH
 
+LOGIN_URL = reverse_lazy("login")
 LOGIN_REDIRECT_URL = reverse_lazy("actual")
 
 PASSWORD_HASHERS = [

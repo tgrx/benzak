@@ -6,9 +6,9 @@ from django.urls import reverse
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
 
-from project.utils import aname
 from apps.dynamics.forms import SearchForm
 from apps.dynamics.models import PriceHistory
+from project.utils import aname
 
 
 class DynamicsView(FormView, ListView):

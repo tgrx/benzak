@@ -4,6 +4,12 @@ default:
   ALLOWED_HOSTS: []
   DATABASE_URL: ""
 
+development:
+  DEBUG: true
+  ALLOWED_HOSTS:
+    - 127.0.0.1
+    - localhost
+
 heroku:
   DEBUG: false
   ALLOWED_HOSTS:
@@ -11,8 +17,10 @@ heroku:
     - localhost
     - benzak.herokuapp.com
 
-development:
+travis:
   DEBUG: true
   ALLOWED_HOSTS:
     - 127.0.0.1
     - localhost
+  SECRET_KEY: "xxx"
+  DATABASE_URL: "postgresql://postgres@localhost:5432/benzak"

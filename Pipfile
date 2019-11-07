@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 black = "==19.3b0"
+httpie = "*"
 ipython = "*"
 pudb = "*"
 
@@ -15,6 +16,7 @@ dynaconf = {extras = ["yaml"],version = "*"}
 gunicorn = "*"
 psycopg2-binary = "*"
 whitenoise = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.7"

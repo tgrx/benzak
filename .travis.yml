@@ -1,0 +1,21 @@
+dist: xenial
+language: python
+
+python:
+  - "3.7"
+
+services:
+  - postgresql
+
+install:
+  - pipenv install
+
+before_script:
+  - psql -c 'create database benzak;' -U postgres
+
+env:
+  global:
+    - ENV_FOR_DYNACONF=travis
+
+script:
+  - python src/manage.py test apps
