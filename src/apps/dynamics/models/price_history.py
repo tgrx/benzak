@@ -13,6 +13,11 @@ class PriceHistory(models.Model):
     class Meta:
         verbose_name_plural = "price history"
         ordering = ["-at", "fuel", "currency"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["at", "currency", "price"], name="singular_price"
+            )
+        ]
 
     def __repr__(self):
         return f"{self.__class__.__name__} #{self.pk}: {self.currency} / {self.fuel}"

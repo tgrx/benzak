@@ -1,6 +1,9 @@
 from datetime import date, datetime
 from typing import Dict
 
+from django.db import IntegrityError, transaction
+from django.http import JsonResponse
+from rest_framework import status
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
@@ -33,6 +36,15 @@ class PriceHistoryViewSet(
     permission_classes = [IsAuthenticated, IsAdminUser]
     queryset = PriceHistory.objects.all()
     serializer_class = PriceHistorySerializer
+
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except IntegrityError as err:
+            return JsonResponse(
+                data={"error": str(err)}, status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class DynamicsViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):

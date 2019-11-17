@@ -86,6 +86,14 @@ class PriceHistoryAdminApiTest(ApiTest):
         self.assertEqual(ph.fuel, ai95)
         self.assertEqual(ph.price, 1488)
 
+        # check singular price
+
+        response = self.client.post("/api/v1/price-history/", data=data, **headers)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        phs = PriceHistory.objects.all()
+        self.assertEqual(len(phs), 1)
+
     def test_replace(self):
         usd = self.create_currency("usd")
         ai95 = self.create_fuel("95")
