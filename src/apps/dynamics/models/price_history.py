@@ -15,7 +15,7 @@ class PriceHistory(models.Model):
         ordering = ["-at", "fuel", "currency"]
         constraints = [
             models.UniqueConstraint(
-                fields=["at", "currency", "price"], name="singular_price"
+                fields=["at", "fuel", "currency"], name="singular_price"
             )
         ]
 

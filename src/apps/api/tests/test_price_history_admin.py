@@ -88,7 +88,14 @@ class PriceHistoryAdminApiTest(ApiTest):
 
         # check singular price
 
-        response = self.client.post("/api/v1/price-history/", data=data, **headers)
+        data_dup = {
+            "price": 8814,
+            "currency": usd.pk,
+            "fuel": ai95.pk,
+            "at": at.strftime("%Y-%m-%d"),
+        }
+
+        response = self.client.post("/api/v1/price-history/", data=data_dup, **headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         phs = PriceHistory.objects.all()
