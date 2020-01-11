@@ -111,3 +111,7 @@ venv.bak/
 
 # static
 src/static/
+
+# packaging
+**/Pipfile.lock
+
