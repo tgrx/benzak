@@ -119,11 +119,12 @@ class TelegramView(APIView):
             bot_url,
             json={
                 "chat_id": chat["id"],
-                # "parse_mode": "Markdown",
+                "parse_mode": "Markdown",
                 "text": "message",
             },
         )
         print(f"XXX chat_id: {chat['id']}")
+        print(f"XXX message: {message!r}")
         print(f"XXX {tg_resp} - {tg_resp.status_code} - {tg_resp.content!r}")
 
         return tg_resp
