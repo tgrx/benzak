@@ -16,7 +16,7 @@ class TelegramApiTest(ApiTest):
             "message": {
                 "chat": {"id": "chat_id"},
                 "from": {"id": "from_id", "first_name": "from_first_name"},
-                "id": "message_id",
+                "message_id": "message_id",
                 "text": "text",
             }
         }

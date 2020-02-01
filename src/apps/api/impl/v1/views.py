@@ -120,7 +120,7 @@ class TelegramView(APIView):
             json={
                 "chat_id": chat["id"],
                 "parse_mode": "Markdown",
-                "reply_to_message_id": message["id"],
+                "reply_to_message_id": message["message_id"],
                 "text": bot_response,
             },
         )
