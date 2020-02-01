@@ -13,4 +13,3 @@ P = dj_database_url.parse(DATABASE_URL)
 print(f"\n\n<><><><><><><><>\n{P['PASSWORD']}\n<><><><><><><><>\n\n")
 
 print(f"psql -h {P['HOST']} -p {P['PORT']} -d {P['NAME']} -U {P['USER']} -W")
-

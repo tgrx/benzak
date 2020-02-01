@@ -5,14 +5,14 @@
 {% block title %}Dynamics{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/pricebox.css' %}"/>
+<link href="{% static 'css/pricebox.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_name %}ДИНАМИКА{% endblock %}
 
 {% block content %}
 
-<form id="dynamics" method="POST" action="{% url 'dynamics' %}">
+<form action="{% url 'dynamics' %}" id="dynamics" method="POST">
     {% csrf_token %}
     {{form.as_p}}
     <button type="submit">Узнать</button>

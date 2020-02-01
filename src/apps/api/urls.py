@@ -1,6 +1,8 @@
-from django.urls import include, path
+from django.urls import include
+from django.urls import path
 
-from apps.api.views import ApiResetTokenView, ApiSettingsView
+from apps.api.views import ApiResetTokenView
+from apps.api.views import ApiSettingsView
 
 urlpatterns = [
     path("", include("apps.api.impl.urls")),

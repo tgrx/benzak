@@ -1,22 +1,36 @@
-from datetime import date, datetime
+from datetime import date
+from datetime import datetime
 from typing import Dict
 
-from django.db import IntegrityError, transaction
+import requests
+from django.db import IntegrityError
+from django.db import transaction
 from django.http import JsonResponse
+from dynaconf import settings
 from rest_framework import status
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import ListModelMixin
+from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from apps.api.custom_types import DynFuelT, DynPriceT, DynT
+from apps.api.custom_types import DynFuelT
+from apps.api.custom_types import DynPriceT
+from apps.api.custom_types import DynT
 from apps.api.impl.auth import CustomTokenAuthentication
-from apps.api.impl.v1.serializers import (
-    CurrencySerializer,
-    DynamicsSerializer,
-    FuelSerializer,
-    PriceHistorySerializer,
-)
-from apps.dynamics.models import Currency, Fuel, PriceHistory
+from apps.api.impl.v1.serializers import CurrencySerializer
+from apps.api.impl.v1.serializers import DynamicsSerializer
+from apps.api.impl.v1.serializers import FuelSerializer
+from apps.api.impl.v1.serializers import PriceHistorySerializer
+from apps.dynamics.models import Currency
+from apps.dynamics.models import Fuel
+from apps.dynamics.models import PriceHistory
 
 
 class CurrencyViewSet(ReadOnlyModelViewSet):
@@ -96,3 +110,60 @@ class DynamicsViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
             result[at] = dyn
 
         return dict(result)
+
+
+class TelegramView(APIView):
+    def bot_respond(self, chat, message, bot_response):
+        bot_url = f"https://api.telegram.org/bot{settings.TELEGRAM_BENZAKBOT_TOKEN}/sendMessage"
+        tg_resp = requests.post(
+            bot_url,
+            json={
+                "chat_id": chat["id"],
+                "parse_mode": "Markdown",
+                "reply_to_message_id": message["id"],
+                "text": bot_response,
+            },
+        )
+
+        return tg_resp
+
+    def post(self, request: Request, *_args, **_kw):
+        if not settings.TELEGRAM_BENZAKBOT_TOKEN or not request:
+            raise PermissionDenied("unknown bot token")
+
+        message = request.data["message"]
+        chat = message["chat"]
+        user = message["from"]
+        text = message["text"]
+
+        bot_response = "Товарищ"
+        if user.get("first_name"):
+            bot_response += " " + user["first_name"]
+        if user.get("last_name"):
+            bot_response += " " + user["last_name"]
+        if user.get("username"):
+            bot_response += " " + user["username"]
+
+        bot_response += "!\n"
+
+        bot_response += (
+            f"Вот ты пишешь:\n\n_{text!r}_\n\n- вот ты что этим хочешь сказать?"
+        )
+
+        tg_resp = self.bot_respond(chat, message, bot_response)
+
+        return Response(
+            data={
+                "chat": chat["id"],
+                "message": text,
+                "ok": True,
+                "status": tg_resp.status_code,
+                "tg": tg_resp,
+                "user": (
+                    f"id={user.get('id')},"
+                    f"fn={user.get('first_name')}, "
+                    f"username={user.get('username')}"
+                ),
+            },
+            content_type="application/json",
+        )

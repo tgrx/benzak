@@ -1,8 +1,10 @@
 from datetime import date
 from decimal import Decimal
-from typing import List, NamedTuple
+from typing import List
+from typing import NamedTuple
 
-from apps.dynamics.models import Currency, Fuel
+from apps.dynamics.models import Currency
+from apps.dynamics.models import Fuel
 
 
 class DynPriceT(NamedTuple):

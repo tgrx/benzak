@@ -5,7 +5,7 @@
 {% block title %}API{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'api/css/textarea-api-token.css' %}"/>
+<link href="{% static 'api/css/textarea-api-token.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block page_name %}АПИ{% endblock %}
@@ -16,7 +16,7 @@
     <label for="textarea-api-token">Токен</label>
 </div>
 <div>
-    <textarea id="textarea-api-token" readonly rows="8" cols="56">{{object.token}}</textarea>
+    <textarea cols="56" id="textarea-api-token" readonly rows="8">{{object.token}}</textarea>
 </div>
 
 <div>

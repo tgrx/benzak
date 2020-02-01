@@ -1,6 +1,7 @@
 from django import forms
 
-from apps.dynamics.models import Currency, Fuel
+from apps.dynamics.models import Currency
+from apps.dynamics.models import Fuel
 
 
 class SearchForm(forms.Form):

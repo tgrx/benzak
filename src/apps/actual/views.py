@@ -1,6 +1,8 @@
 from django.views.generic import ListView
 
-from apps.dynamics.models import Currency, Fuel, PriceHistory
+from apps.dynamics.models import Currency
+from apps.dynamics.models import Fuel
+from apps.dynamics.models import PriceHistory
 
 
 class ActualView(ListView):

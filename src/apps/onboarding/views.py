@@ -1,5 +1,7 @@
 from django import forms
-from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
+from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import FormView

@@ -16,11 +16,11 @@
 {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'signup' %}">
+<form action="{% url 'signup' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Вписаться">
-    <input type="hidden" name="next" value="{{ next }}">
+    <input name="next" type="hidden" value="{{ next }}">
 </form>
 
 {% endblock %}

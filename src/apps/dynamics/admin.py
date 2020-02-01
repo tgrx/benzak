@@ -2,7 +2,9 @@ from django import forms
 from django.contrib import admin
 from django.db import models
 
-from apps.dynamics.models import Currency, Fuel, PriceHistory
+from apps.dynamics.models import Currency
+from apps.dynamics.models import Fuel
+from apps.dynamics.models import PriceHistory
 
 
 class FuelModelAdminForm(forms.ModelForm):

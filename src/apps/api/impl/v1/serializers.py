@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from apps.dynamics.models import Currency, Fuel, PriceHistory
+from apps.dynamics.models import Currency
+from apps.dynamics.models import Fuel
+from apps.dynamics.models import PriceHistory
 
 
 class CurrencySerializer(serializers.ModelSerializer):

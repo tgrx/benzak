@@ -1,26 +1,28 @@
 default:
-  SECRET_KEY: ""
-  DEBUG: true
   ALLOWED_HOSTS: []
   DATABASE_URL: ""
+  DEBUG: true
+  SECRET_KEY: ""
+  TELEGRAM_BENZAKBOT_TOKEN: ""
 
 development:
-  DEBUG: true
   ALLOWED_HOSTS:
     - 127.0.0.1
     - localhost
+  DEBUG: true
 
 heroku:
-  DEBUG: false
   ALLOWED_HOSTS:
     - 127.0.0.1
     - localhost
     - benzak.herokuapp.com
+  DEBUG: false
 
 travis:
-  DEBUG: true
   ALLOWED_HOSTS:
     - 127.0.0.1
     - localhost
-  SECRET_KEY: "xxx"
   DATABASE_URL: "postgresql://postgres@localhost:5432/benzak"
+  DEBUG: true
+  SECRET_KEY: "xxx"
+  TELEGRAM_BENZAKBOT_TOKEN: "1"

@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Benzak :: {% block title %}XXX{% endblock %}</title>
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
+    <link href="{% static 'favicon.png' %}" rel="shortcut icon" type="image/png"/>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet"/>
     {% block head %}{% endblock %}
 </head>
 
@@ -28,18 +28,18 @@
     {% url 'signup' as u_signup %}
 
     <a class="logo" href="{% url 'actual' %}"><span>⛽️</span></a>
-    <a href="{{u_dynamics}}"
-       class="menu-item{% ifequal request.path u_dynamics %} here{% endifequal %}"><span>ДИНАМИКА</span></a>
-    <a href="{{u_graphics}}"
-       class="menu-item{% ifequal request.path u_graphics %} here{% endifequal %}"><span>ГРАФИКА</span></a>
+    <a class="menu-item{% ifequal request.path u_dynamics %} here{% endifequal %}"
+       href="{{u_dynamics}}"><span>ДИНАМИКА</span></a>
+    <a class="menu-item{% ifequal request.path u_graphics %} here{% endifequal %}"
+       href="{{u_graphics}}"><span>ГРАФИКА</span></a>
 
     {% if request.user.is_authenticated %}
-    <a href="{{u_api}}"
-       class="menu-item{% ifequal request.path u_api %} here{% endifequal %}"><span>АПИ</span></a>
+    <a class="menu-item{% ifequal request.path u_api %} here{% endifequal %}"
+       href="{{u_api}}"><span>АПИ</span></a>
     {% endif %}
 
-    <a href="{{u_about}}"
-       class="menu-item{% ifequal request.path u_about %} here{% endifequal %}"><span>О ПРОЕКТЕ</span></a>
+    <a class="menu-item{% ifequal request.path u_about %} here{% endifequal %}"
+       href="{{u_about}}"><span>О ПРОЕКТЕ</span></a>
 
     {% if request.user.is_authenticated %}
     <a class="menu-item{% ifequal request.path u_password_change %} here{% endifequal %}"

@@ -16,5 +16,6 @@ djangorestframework = "*"
 dynaconf = {extras = ["yaml"],version = "*"}
 gunicorn = "*"
 psycopg2-binary = "*"
+requests = "*"
 whitenoise = "*"
 

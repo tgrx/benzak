@@ -1,9 +1,7 @@
-from django.contrib.auth.views import (
-    LoginView,
-    LogoutView,
-    PasswordChangeDoneView,
-    PasswordChangeView,
-)
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import PasswordChangeDoneView
+from django.contrib.auth.views import PasswordChangeView
 from django.urls import path
 
 from apps.onboarding.views import SignUpView

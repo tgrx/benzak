@@ -1,6 +1,7 @@
 from django.db import models
 
-from apps.dynamics.models import Currency, Fuel
+from apps.dynamics.models import Currency
+from apps.dynamics.models import Fuel
 
 
 class PriceHistory(models.Model):

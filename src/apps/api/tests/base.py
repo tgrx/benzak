@@ -2,10 +2,13 @@ import os
 from datetime import date
 
 from django.contrib.auth import get_user_model
-from django.test import Client, TestCase
+from django.test import Client
+from django.test import TestCase
 
 from apps.api.models import ApiSettings
-from apps.dynamics.models import Currency, Fuel, PriceHistory
+from apps.dynamics.models import Currency
+from apps.dynamics.models import Fuel
+from apps.dynamics.models import PriceHistory
 
 User = get_user_model()
 
