@@ -113,18 +113,18 @@ class DynamicsViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 
 class TelegramView(APIView):
-    def bot_respond(self, chat, message, bot_response):
+    def bot_respond(self, chat, message):
         bot_url = f"https://api.telegram.org/bot{settings.TELEGRAM_BENZAKBOT_TOKEN}/sendMessage"
         tg_resp = requests.post(
             bot_url,
             json={
                 "chat_id": chat["id"],
                 "parse_mode": "Markdown",
-                "reply_to_message_id": message["message_id"],
-                "text": bot_response,
+                "text": message,
             },
         )
-        print(f"XXX {tg_resp} - {tg_resp.status_code}")
+        print(f"XXX chat_id: {chat['id']}")
+        print(f"XXX {tg_resp} - {tg_resp.status_code} - {tg_resp.content!r}")
 
         return tg_resp
 
@@ -151,7 +151,7 @@ class TelegramView(APIView):
             f"Вот ты пишешь:\n\n_{text!r}_\n\n- вот ты что этим хочешь сказать?"
         )
 
-        tg_resp = self.bot_respond(chat, message, bot_response)
+        tg_resp = self.bot_respond(chat, bot_response)
 
         return Response(
             data={
