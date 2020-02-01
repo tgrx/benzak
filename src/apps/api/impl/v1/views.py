@@ -113,19 +113,15 @@ class DynamicsViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 
 class TelegramView(APIView):
-    def bot_respond(self, chat, message):
+    def bot_respond(self, chat, reply, message_id=None):
         bot_url = f"https://api.telegram.org/bot{settings.TELEGRAM_BENZAKBOT_TOKEN}/sendMessage"
-        tg_resp = requests.post(
-            bot_url,
-            json={
-                "chat_id": chat["id"],
-                "parse_mode": "Markdown",
-                "text": "message",
-            },
-        )
-        print(f"XXX chat_id: {chat['id']}")
-        print(f"XXX message: {message!r}")
-        print(f"XXX {tg_resp} - {tg_resp.status_code} - {tg_resp.content!r}")
+
+        payload = {"chat_id": chat["id"], "text": reply}
+
+        if message_id:
+            payload["reply_to_message_id"] = message_id
+
+        tg_resp = requests.post(bot_url, json=payload)
 
         return tg_resp
 
@@ -138,21 +134,17 @@ class TelegramView(APIView):
         user = message["from"]
         text = message["text"]
 
-        bot_response = "Товарищ"
-        if user.get("first_name"):
-            bot_response += " " + user["first_name"]
-        if user.get("last_name"):
-            bot_response += " " + user["last_name"]
+        bot_response = ""
         if user.get("username"):
-            bot_response += " " + user["username"]
+            bot_response += "@" + user["username"]
+        elif user.get("first_name"):
+            bot_response += user["first_name"]
+            if user.get("last_name"):
+                bot_response += " " + user["last_name"]
 
-        bot_response += "!\n"
+        bot_response += "! За слова ответишь?"
 
-        bot_response += (
-            f"Вот ты пишешь:\n\n_{text!r}_\n\n- вот ты что этим хочешь сказать?"
-        )
-
-        tg_resp = self.bot_respond(chat, bot_response)
+        tg_resp = self.bot_respond(chat, bot_response, message["message_id"])
 
         return Response(
             data={
