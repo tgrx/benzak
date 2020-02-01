@@ -126,8 +126,12 @@ class TelegramView(APIView):
         return tg_resp
 
     def post(self, request: Request, *_args, **_kw):
-        if not settings.TELEGRAM_BENZAKBOT_TOKEN or not request:
-            raise PermissionDenied("unknown bot token")
+        if (
+            not settings.TELEGRAM_BENZAKBOT_TOKEN
+            or not request
+            or "message" not in request.data
+        ):
+            raise PermissionDenied("invalid bot configuration")
 
         message = request.data["message"]
         chat = message["chat"]
