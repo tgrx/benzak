@@ -124,6 +124,7 @@ class TelegramView(APIView):
                 "text": bot_response,
             },
         )
+        print(f"XXX {tg_resp} - {tg_resp.status_code}")
 
         return tg_resp
 
