@@ -132,7 +132,7 @@ class TelegramView(APIView):
         message = request.data["message"]
         chat = message["chat"]
         user = message["from"]
-        text = message["text"]
+        text = message.get("text")
 
         bot_response = ""
         if user.get("username"):
