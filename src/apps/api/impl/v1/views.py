@@ -119,8 +119,8 @@ class TelegramView(APIView):
             bot_url,
             json={
                 "chat_id": chat["id"],
-                "parse_mode": "Markdown",
-                "text": message,
+                # "parse_mode": "Markdown",
+                "text": "message",
             },
         )
         print(f"XXX chat_id: {chat['id']}")
