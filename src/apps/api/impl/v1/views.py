@@ -119,10 +119,12 @@ class TelegramView(APIView):
 
         prices = []
 
-        n = datetime.now()
+        n = datetime.now().date()
 
         for fuel in fuels:
-            ph: PriceHistory = PriceHistory.objects.filter(fuel=fuel, currency=currency).order_by("-at").first()
+            ph: PriceHistory = PriceHistory.objects.filter(
+                fuel=fuel, currency=currency
+            ).order_by("-at").first()
             price = f"{fuel.name}: {ph.price} р. ({(n - ph.at).days} дн.)"
             prices.append(price)
 
@@ -142,9 +144,9 @@ class TelegramView(APIView):
 
     def post(self, request: Request, *_args, **_kw):
         if (
-                not settings.TELEGRAM_BENZAKBOT_TOKEN
-                or not request
-                or "message" not in request.data
+            not settings.TELEGRAM_BENZAKBOT_TOKEN
+            or not request
+            or "message" not in request.data
         ):
             raise PermissionDenied("invalid bot configuration")
 
