@@ -113,6 +113,21 @@ class DynamicsViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
 
 class TelegramView(APIView):
+    def get_actual_prices(self):
+        fuels = Fuel.objects.all()
+        currency = Currency.objects.filter(name="BYN").first()
+
+        prices = []
+
+        n = datetime.now()
+
+        for fuel in fuels:
+            ph: PriceHistory = PriceHistory.objects.filter(fuel=fuel, currency=currency).order_by("-at").first()
+            price = f"{fuel.name}: {ph.price} р. ({(n - ph.at).days} дн.)"
+            prices.append(price)
+
+        return prices
+
     def bot_respond(self, chat, reply, message_id=None):
         bot_url = f"https://api.telegram.org/bot{settings.TELEGRAM_BENZAKBOT_TOKEN}/sendMessage"
 
@@ -127,9 +142,9 @@ class TelegramView(APIView):
 
     def post(self, request: Request, *_args, **_kw):
         if (
-            not settings.TELEGRAM_BENZAKBOT_TOKEN
-            or not request
-            or "message" not in request.data
+                not settings.TELEGRAM_BENZAKBOT_TOKEN
+                or not request
+                or "message" not in request.data
         ):
             raise PermissionDenied("invalid bot configuration")
 
@@ -138,15 +153,18 @@ class TelegramView(APIView):
         user = message["from"]
         text = message.get("text")
 
-        bot_response = ""
-        if user.get("username"):
-            bot_response += "@" + user["username"]
-        elif user.get("first_name"):
-            bot_response += user["first_name"]
-            if user.get("last_name"):
-                bot_response += " " + user["last_name"]
+        if text == "/actual":
+            bot_response = "Актуальные цены:\n" + "\n".join(self.get_actual_prices())
+        else:
+            bot_response = ""
+            if user.get("username"):
+                bot_response += "@" + user["username"]
+            elif user.get("first_name"):
+                bot_response += user["first_name"]
+                if user.get("last_name"):
+                    bot_response += " " + user["last_name"]
 
-        bot_response += "! За слова ответишь?"
+            bot_response += "! За слова ответишь?"
 
         tg_resp = self.bot_respond(chat, bot_response, message["message_id"])
 
