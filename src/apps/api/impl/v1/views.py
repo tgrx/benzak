@@ -125,7 +125,7 @@ class TelegramView(APIView):
             ph: PriceHistory = PriceHistory.objects.filter(
                 fuel=fuel, currency=currency
             ).order_by("-at").first()
-            price = f"{fuel.name}: {ph.price} р. ({(n - ph.at).days} дн.)"
+            price = f"{fuel.name}: {round(ph.price, 2)} р. ({(n - ph.at).days} д.)"
             prices.append(price)
 
         return prices
@@ -156,7 +156,7 @@ class TelegramView(APIView):
         text = message.get("text")
 
         if text == "/actual":
-            bot_response = "Актуальные цены:\n" + "\n".join(self.get_actual_prices())
+            bot_response = "Актуальные цены:\n\n" + "\n".join(self.get_actual_prices())
         else:
             bot_response = ""
             if user.get("username"):
