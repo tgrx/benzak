@@ -1,14 +1,17 @@
 from collections import defaultdict
 from datetime import date
 
+from django.db import connection
 from django.db.models import Model
 from django.urls import reverse
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
 
 from apps.dynamics.forms import SearchForm
+from apps.dynamics.models import Currency
+from apps.dynamics.models import Fuel
 from apps.dynamics.models import PriceHistory
-from project.utils import aname
+from project.utils import a
 
 
 class DynamicsView(FormView, ListView):
@@ -20,7 +23,7 @@ class DynamicsView(FormView, ListView):
         return SearchForm
 
     def get_initial(self):
-        return {aname(PriceHistory.at): date.today()}
+        return {a(PriceHistory.at): date.today()}
 
     def get_form_kwargs(self):
         data = self.get_initial()
@@ -67,14 +70,28 @@ class DynamicsView(FormView, ListView):
 
     def get_queryset(self):
         form = self.get_form()
-
         if not form.is_valid():
             # TODO: implement error handling
             return []
 
+        if form.cleaned_data[a(PriceHistory.at)] <= date.today():
+            result = self._build_historic(form)
+        else:
+            result = self._predict(form)
+
+        return result.items()
+
+    def get_context_data(self, **kwargs):
+        context = {}
+
+        context.update(FormView.get_context_data(self, **kwargs))
+        context.update(ListView.get_context_data(self, **kwargs))
+
+        return context
+
+    def _build_historic(self, form):
         history = PriceHistory.objects.all()
 
-        # TODO: walrus op
         for field in form.fields:
             value = form.cleaned_data[field]
             if value:
@@ -84,12 +101,53 @@ class DynamicsView(FormView, ListView):
         for h in history:
             grouped[h.fuel].append(h)
 
-        return grouped.items()
+        return grouped
 
-    def get_context_data(self, **kwargs):
-        context = {}
+    def _predict(self, form):
+        at = form.cleaned_data[a(PriceHistory.at)]
 
-        context.update(FormView.get_context_data(self, **kwargs))
-        context.update(ListView.get_context_data(self, **kwargs))
+        query = f"""
+            WITH
+                future AS (SELECT '{at.strftime("%Y-%m-%d")}'::date AS at)
+            SELECT
+                at,
+                fuel_id,
+                round(regr_intercept(y, x)::numeric, 2) AS price
+            FROM
+                (SELECT
+                     future.at                                                          AS at,
+                     f.id                                                               AS fuel_id,
+                     extract(EPOCH FROM age(ph.{a(PriceHistory.at)}, future.at))::float AS x,
+                     {a(PriceHistory.price)}::float                                     AS y
+                 FROM
+                     future,
+                     {a(Currency)} AS c,
+                     {a(Fuel)} AS f,
+                     {a(PriceHistory)} AS ph
+                 WHERE
+                       ph.{a(PriceHistory.currency_id)} = c.id
+                   AND ph.{a(PriceHistory.fuel_id)} = f.id
+                   AND c.{a(Currency.name)} = 'BYN'
+                   AND age(statement_timestamp(), ph.{a(PriceHistory.at)}) <= age(future.at, statement_timestamp())
+                ) AS historical
+            GROUP BY
+                fuel_id, at
+            ;
+        """
 
-        return context
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            rows = cursor.fetchall()
+            raw_prices = [dict(zip(columns, row)) for row in rows]
+
+        byn = Currency.objects.get(name="BYN")
+
+        grouped = defaultdict(list)
+        for rp in raw_prices:
+            fuel = Fuel.objects.get(pk=rp["fuel_id"])
+            grouped[fuel].append(
+                {"at": rp["at"], "price": rp["price"], "currency": byn}
+            )
+
+        return grouped

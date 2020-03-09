@@ -1,1 +1,1 @@
-from .aname import aname
+from .aname import a
