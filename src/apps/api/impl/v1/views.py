@@ -233,13 +233,25 @@ class TelegramView(APIView):
         if not settings.TELEGRAM_BENZAKBOT_TOKEN or not request:
             raise PermissionDenied("invalid bot configuration")
 
-        message = request.data.get("message")
-        if not message:
-            return Response(data={"ok": False}, content_type="application/json")
+        try:
+            ok = self._do_post(request)
+        except Exception:
+            ok = False
 
+        return Response(
+            data={"ok": ok},
+            content_type="application/json",
+        )
+
+    def _do_post(self, request):
+        if "message" not in request.data:
+            return False
+        message = request.data["message"]
         chat = message["chat"]
         user = message["from"]
         text = message.get("text")
+        if not text:
+            return False
         kw = {}
 
         if text in ("/actual", "Актуальные"):
@@ -261,9 +273,9 @@ class TelegramView(APIView):
                 bot_response = f"Не могу предсказать цены на {at.strftime('%Y-%m-%d')}"
             else:
                 bot_response = (
-                    f"<b>Прогноз на {pred.at.strftime('%Y-%m-%d')}</b>\n\n<pre>"
-                    + "\n".join(f"{e.fuel:<10}\t{e.price:.02f}" for e in pred.estimates)
-                    + "</pre>\n"
+                        f"<b>Прогноз на {pred.at.strftime('%Y-%m-%d')}</b>\n\n<pre>"
+                        + "\n".join(f"{e.fuel:<10}\t{e.price:.02f}" for e in pred.estimates)
+                        + "</pre>\n"
                 )
                 kw["html"] = True
         else:
@@ -279,19 +291,6 @@ class TelegramView(APIView):
             kw["message_id"] = message["message_id"]
 
         tg_resp = self.bot_respond(chat, bot_response, **kw)
+        print(tg_resp)
 
-        return Response(
-            data={
-                "chat": chat["id"],
-                "message": text,
-                "ok": True,
-                "status": tg_resp.status_code,
-                "tg": tg_resp,
-                "user": (
-                    f"id={user.get('id')},"
-                    f"fn={user.get('first_name')}, "
-                    f"username={user.get('username')}"
-                ),
-            },
-            content_type="application/json",
-        )
+        return True
