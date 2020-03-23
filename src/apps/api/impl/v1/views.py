@@ -238,10 +238,7 @@ class TelegramView(APIView):
         except Exception:
             ok = False
 
-        return Response(
-            data={"ok": ok},
-            content_type="application/json",
-        )
+        return Response(data={"ok": ok}, content_type="application/json")
 
     def _do_post(self, request):
         if "message" not in request.data:
@@ -273,9 +270,9 @@ class TelegramView(APIView):
                 bot_response = f"Не могу предсказать цены на {at.strftime('%Y-%m-%d')}"
             else:
                 bot_response = (
-                        f"<b>Прогноз на {pred.at.strftime('%Y-%m-%d')}</b>\n\n<pre>"
-                        + "\n".join(f"{e.fuel:<10}\t{e.price:.02f}" for e in pred.estimates)
-                        + "</pre>\n"
+                    f"<b>Прогноз на {pred.at.strftime('%Y-%m-%d')}</b>\n\n<pre>"
+                    + "\n".join(f"{e.fuel:<10}\t{e.price:.02f}" for e in pred.estimates)
+                    + "</pre>\n"
                 )
                 kw["html"] = True
         else:
